@@ -179,6 +179,13 @@
                   <span class="badge badge-danger">เหลือ {{ ing.days_remaining }} วัน</span>
                 {% endif %}
               </p>
+              <form method="post" action="{% url 'delete_ingredient' ing.id %}" style="margin-top:8px;"
+      onsubmit="return confirm('คุณต้องการลบวัตถุดิบนี้จริงหรือไม่?');">
+                {% csrf_token %}
+                <button type="submit" style="background:#C62828;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;">
+                  ลบ
+                </button>
+              </form>
             </div>
           </div>
           {% endfor %}
@@ -196,6 +203,13 @@
               <h3>{{ ing.name }} (x{{ ing.quantity }})</h3>
               <p>เตรียมเมื่อ: {{ ing.prepared_date }}</p>
               <p>วันหมดอายุ: {{ ing.expiry_date }}</p>
+              <form method="post" action="{% url 'delete_ingredient' ing.id %}" style="margin-top:8px;"
+      onsubmit="return confirm('คุณต้องการลบวัตถุดิบนี้จริงหรือไม่?');">
+                {% csrf_token %}
+                <button type="submit" style="background:#C62828;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;">
+                  ลบ
+                </button>
+              </form>
             </div>
           </div>
           {% endfor %}
