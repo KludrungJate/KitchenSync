@@ -151,15 +151,16 @@
   <nav class="navbar">
     <div class="navbar-logo">KitchenSync</div>
     <ul class="navbar-menu">
-      <li><a href="#">เพิ่มวัตถุดิบ</a></li>
+      <li><a href="{% url 'add_ingredient' %}">เพิ่มวัตถุดิบ</a></li>
       <li><a href="#">เมนูแนะนำ</a></li>
     </ul>
   </nav>
 
   <div class="container">
     <h1>ระบบจัดการวัตถุดิบ</h1>
-    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 32px;">
-
+    <!-- ฟิลเตอร์ค้นหาวัตถุดิบล่าสุด -->
+     
+    <div style="margin-bottom: 24px;">
       <!-- วัตถุดิบทั้งหมด -->
       <div>
         <h2>วัตถุดิบทั้งหมด</h2>
@@ -176,64 +177,37 @@
             {% endif %}
             <div class="card-body">
               <h3>{{ ing.name }} (x{{ ing.quantity }})</h3>
-              <p>เตรียมเมื่อ: {{ ing.prepared_date }}</p>
               <p>วันหมดอายุ: {{ ing.expiry_date }}</p>
               <p>
                 {% if ing.days_remaining > 5 %}
                 <span class="badge badge-safe">เหลือ {{ ing.days_remaining }} วัน</span>
                 {% elif ing.days_remaining > 2 %}
                 <span class="badge badge-warning">เหลือ {{ ing.days_remaining }} วัน</span>
-                {% elif ing.days_remaining < 1 %} <span class="badge badge-danger">หมดอายุแล้ว</span>
-                  {% else %}
-                  <span class="badge badge-danger">เหลือ {{ ing.days_remaining }} วัน</span>
-                  {% endif %}
+                {% elif ing.days_remaining < 1 %}
+                <span class="badge badge-danger">หมดอายุแล้ว</span>
+                {% else %}
+                <span class="badge badge-danger">เหลือ {{ ing.days_remaining }} วัน</span>
+                {% endif %}
               </p>
-              <form method="post" action="{% url 'delete_ingredient' ing.id %}" style="margin-top:8px;"
-                onsubmit="return confirm('คุณต้องการลบวัตถุดิบนี้จริงหรือไม่?');">
-                {% csrf_token %}
-                <button type="submit"
-                  style="background:#C62828;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;">
-                  ลบ
-                </button>
-              </form>
+              <div style="display:flex;justify-content:center;">
+                <form method="post" action="{% url 'delete_ingredient' ing.id %}" style="margin-top:8px;"
+                  onsubmit="return confirm('คุณต้องการลบวัตถุดิบนี้จริงหรือไม่?');">
+                  {% csrf_token %}
+                  <button type="submit"
+                    style="background:#C62828;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;">
+                    ลบ
+                  </button>
+                </form>
+              </div>
             </div>
           </div>
           {% endfor %}
         </div>
-      </div>
-
-      <!-- วัตถุดิบล่าสุด -->
-      <div>
-        <h2>วัตถุดิบล่าสุด</h2>
-        <div class="grid" style="grid-template-columns: 1fr;">
-          {% for ing in latest_ingredients %}
-          <div class="card">
-            {% if ing.image_url == '/static/images/default.png' %}
-            <div
-              style="width:100%;height:200px;display:flex;align-items:center;justify-content:center;background:#eee;color:#888;object-fit:cover;">
-              ไม่มีรูปภาพ
-            </div>
-            {% else %}
-            <img src="{{ ing.image_url }}" alt="{{ ing.name }}" style="width:100%;height:200px;object-fit:cover;" />
-            {% endif %}
-            <div class="card-body">
-              <h3>{{ ing.name }} (x{{ ing.quantity }})</h3>
-              <p>เตรียมเมื่อ: {{ ing.prepared_date }}</p>
-              <p>วันหมดอายุ: {{ ing.expiry_date }}</p>
-              <form method="post" action="{% url 'delete_ingredient' ing.id %}" style="margin-top:8px;"
-                onsubmit="return confirm('คุณต้องการลบวัตถุดิบนี้จริงหรือไม่?');">
-                {% csrf_token %}
-                <button type="submit"
-                  style="background:#C62828;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;">
-                  ลบ
-                </button>
-              </form>
-            </div>
-          </div>
-          {% endfor %}
-        </div>
+      </div>    
       </div>
     </div>
+
+    
   </div>
 
   <script>

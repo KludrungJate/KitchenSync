@@ -2,7 +2,7 @@ from django.db import models
 from datetime import date, timedelta
 
 class IngredientImage(models.Model):
-    name = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100)  # เอา unique=True ออก
     image = models.ImageField(upload_to='ingredient_images/')
 
     def __str__(self):
